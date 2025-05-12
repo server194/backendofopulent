@@ -37,7 +37,8 @@ OPENROUTER_API_KEY = config("OPENROUTER_API_KEY")
 
 ALLOWED_HOSTS = [
     "*",
-    "valourwealthdjango-production.up.railway.app"
+    "valourwealthdjango-production.up.railway.app",
+    "https://backendofopulent-production.up.railway.app"
 ]
 
 
@@ -58,10 +59,12 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -94,9 +97,9 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000"
     "https://192.168.1.12:3000",
     "https://valourwealthdjango-production.up.railway.app",
-    "https://backendofopulent-production.up.railway.app"
-    "https://valourwealthy.vercel.app"
-    "https://frontend-ip2ppjsh7-ammars-projects-60a6d7dc.vercel.app/" 
+    "https://backendofopulent-production.up.railway.app",
+    "https://valourwealthy.vercel.app",
+    "https://frontend-ip2ppjsh7-ammars-projects-60a6d7dc.vercel.app", 
 
 ]
 
