@@ -114,37 +114,56 @@ class BlogPostStructuredDetailAPIView(generics.RetrieveAPIView):
 
 
 
-import requests
-from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import requests
 import json
-from django.conf import settings
 
 @csrf_exempt
 def chat_view(request):
     if request.method == "POST":
-        data = json.loads(request.body)
-        user_message = data.get("message")
-
-        headers = {
-            "Authorization": f"Bearer {settings.OPENROUTER_API_KEY}",
-            "Content-Type": "application/json",
-        }
-
-        payload = {
-            "model": "openrouter/auto",  # or a specific model like "openrouter/gpt-4"
-            "messages": [
-                {"role": "user", "content": user_message}
-            ],
-        }
-
-        response = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json=payload)
-
         try:
+            data = json.loads(request.body)
+            user_message = data.get("message")
+
+            if not user_message:
+                return JsonResponse({"error": "No message provided"}, status=400)
+
+            headers = {
+                "Authorization": "Bearer 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",
+                "Content-Type": "application/json",
+            }
+
+            payload = {
+                "model": "meta-llama/llama-3-8b-instruct:free",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": user_message
+                    }
+                ]
+            }
+
+            response = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json=payload)
+            response.raise_for_status()
+
             result = response.json()
+
+            # Debug log
+            print("OpenRouter raw response:", result)
+
             reply = result['choices'][0]['message']['content']
             return JsonResponse({"reply": reply})
+
+        except requests.exceptions.HTTPError as http_err:
+            print("HTTP Error:", http_err)
+            print("Response content:", response.text)
+            return JsonResponse({"error": "OpenRouter API HTTP Error", "details": response.text}, status=500)
+
         except Exception as e:
-            return JsonResponse({"error": "Failed to get response", "details": str(e)}, status=500)
+            import traceback
+            print("Unhandled Error:", traceback.format_exc())
+            return JsonResponse({"error": "Unhandled server error", "details": str(e)}, status=500)
 
     return JsonResponse({"error": "Only POST method allowed"}, status=405)
+

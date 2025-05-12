@@ -99,8 +99,10 @@ CSRF_TRUSTED_ORIGINS = [
     "https://valourwealthdjango-production.up.railway.app",
     "https://backendofopulent-production.up.railway.app",
     "https://valourwealthy.vercel.app",
-    "https://frontend-ip2ppjsh7-ammars-projects-60a6d7dc.vercel.app", 
-
+    "https://frontend-ip2ppjsh7-ammars-projects-60a6d7dc.vercel.app",
+    "https://frontend-j5vuyrm3t-ammars-projects-60a6d7dc.vercel.app",
+     
+    
 ]
 
 
