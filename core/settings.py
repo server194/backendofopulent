@@ -94,7 +94,9 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000"
     "https://192.168.1.12:3000",
     "https://valourwealthdjango-production.up.railway.app",
+    "https://backendofopulent-production.up.railway.app"
     "https://valourwealthy.vercel.app"
+    "https://frontend-ip2ppjsh7-ammars-projects-60a6d7dc.vercel.app/" 
 
 ]
 
@@ -145,7 +147,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+import os
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+if os.getenv('RENDER') or os.getenv('RAILWAY_ENVIRONMENT'):
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
